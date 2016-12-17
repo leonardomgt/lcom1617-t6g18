@@ -11,7 +11,6 @@ void logVInt(const char* key, int var, char* file);
 int wait_for_key(unsigned char keyScancode);
 int keyPressed(scode* scancode);
 
-
 /**
  * @brief Waits for first player pressing his key
  *
@@ -35,4 +34,12 @@ int wait_for_player_turn();
  */
 int wait_for_player_answer(char* base, unsigned short xi, unsigned short yi, short delta, unsigned short time, unsigned short height, unsigned char* answer, unsigned short* timeSpent);
 
+
 int generate_question();
+
+
+char** configLetter(char** xpm, unsigned char mainColor);
+
+void resizeLetter(char** xpm, char** xpm_tmp, int size);
+
+char* itoa(int i, char b[]);

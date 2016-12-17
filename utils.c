@@ -36,7 +36,9 @@ void log(const char* key, const char* value, char* path) {
 	time (&timeSeconds);
 	timeInfo = gmtime (&timeSeconds);
 
+
 	logFile = fopen(path, "a+");
+
 	fprintf(logFile, "[%d/%d/%d - %d:%d:%d] %s: %s\n",
 			timeInfo->tm_mday,
 			timeInfo->tm_mon+1,
@@ -48,6 +50,7 @@ void log(const char* key, const char* value, char* path) {
 
 	fclose(logFile);
 }
+
 
 void logVInt(const char* key, int var, char* path) {
 
@@ -71,7 +74,6 @@ void logVInt(const char* key, int var, char* path) {
 	fclose(logFile);
 
 }
-
 
 int wait_for_key(unsigned char keyScancode) {
 
@@ -181,8 +183,6 @@ int keyPressed(scode* scancode) {
 
 
 }
-
-
 
 
 //-1 = something went wrong, 0 = space key 1 = enter key
@@ -450,4 +450,153 @@ int generate_question(char* base) {
 	}
 	free(answer);
 
+}
+
+char** configLetter(char** xpm, unsigned char mainColor){
+	char** xpm_tmp = xpm;
+
+	//Change Main Color
+	char* str1;
+	char str2[2];
+	str1 = "  ";
+	itoa(mainColor, str2);
+	char * newMainColor = (char *) malloc(1 + strlen(str1)+ strlen(str2) );
+	strcpy(newMainColor, str1);
+	strcat(newMainColor, str2);
+
+	xpm_tmp[1] = newMainColor;
+
+//	char str3[2];
+//	str1 = "F ";
+//	itoa(background, str2);
+//	char * newBackground = (char *) malloc(1 + strlen(str1)+ strlen(str2) );
+//	strcpy(newBackground, str1);
+//	strcat(newBackground, str2);
+//
+//	xpm_tmp[2] = newBackground;
+
+//	free(newBackground);
+//	free(newMainColor);
+
+	return xpm_tmp;
+}
+
+void resizeLetter(char** xpm, char** xpm_tmp, int size){
+
+
+	log("estado", "inicializou o resize");
+	int width=16, high =17, nColors =2;
+	char spaceChar;
+
+	log("dimensions", xpm[0]);
+
+	sscanf( xpm[0], "%d %d %d", &width, &high, &nColors);
+
+	logVInt("width", width);
+	logVInt("high", high);
+	logVInt("nColors", nColors);
+
+	xpm_tmp = (char**)malloc((3 + high*size)*sizeof(char*));
+
+	int n;
+	for(n = 0; n < (3 + high*size); n++){
+		xpm_tmp[n] = (char*) malloc(width*size);
+	}
+
+	//CHANGE STRING
+
+	int counter = 3;
+
+	while(counter <= (high + 3)){
+
+
+		if(counter == (high + 3)){
+			xpm_tmp[high + 3] = 0;
+			break;
+		}
+//		logVInt("counter", counter);
+
+		char newLine[width*size+1];
+
+		memset(newLine, 0, width*size+1);
+		int letters = 0;
+		for(; letters < width; letters++){
+
+			int i = 0;
+			for(; i < size; i++){
+
+				newLine[i+letters*size] = xpm[counter][letters];
+//				logVInt("",i+letters*size);
+			}
+
+		}
+
+		int i = 0;
+		for(; i < size; i++){
+			xpm_tmp[size*counter - 3 + i] = newLine;
+
+			log("newLine", newLine);
+		}
+
+
+		counter++;
+	}
+	//CHANGE DIMENSIONS STRING
+
+
+	log("estado", "acabou a primeira parte");
+
+	width *= size;
+	high *= size;
+
+	logVInt("width", width);
+	logVInt("high", high);
+
+	char* space = " ";
+	char str1[3];
+	char str2[3];
+	char str3[1];
+
+	itoa(width, str1);
+	itoa(high, str2);
+	itoa(nColors, str3);
+
+
+//	char dimensions[10];
+	char* dimensions = (char *) malloc(3 + strlen(str1) + strlen(str2));
+	strcpy(dimensions, str1);
+	strcat(dimensions, space);
+	strcat(dimensions, str2);
+	strcat(dimensions, space);
+	strcat(dimensions, str3);
+
+	xpm_tmp[0] = dimensions;
+	xpm_tmp[1] = xpm[1];
+	xpm_tmp[2] = xpm[2];
+
+
+	int i = 0;
+	for(; i < 37; i++){
+		log("", xpm_tmp[i]);
+	}
+}
+
+char* itoa(int i, char b[]){
+    char const digit[] = "0123456789";
+    char* p = b;
+    if(i<0){
+        *p++ = '-';
+        i *= -1;
+    }
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
 }

@@ -9,6 +9,7 @@ typedef unsigned char scode;
 #define PATH_TO_LOG 		"/home/lcom/lcom1617-t6g18/proj/log.txt"
 #define PATH_TO_DEBUG 		"/home/lcom/lcom1617-t6g18/proj/debug.txt"
 
+
 /** @defgroup i8254 i8254
  * @{
  *
@@ -73,13 +74,22 @@ typedef unsigned char scode;
 #define IN_REGa			0x60 /**< @brief Keyboard in buffer register */
 #define IN_REGb			0x64 /**< @brief Keyboard in buffer register */
 
-#define ESC_SCANCODE	0x1 /**< @brief ESC scancode */
-#define ENTER_SCANCODE	0x1C /**< @brief ENTER scancode */
-#define SPACE_SCANCODE	0x39 /**< @brief SPACE scancode */
-#define ONE_SCANCODE	0x2 /**< @brief ONE scancode */
-#define TWO_SCANCODE	0x3 /**< @brief TWO scancode */
-#define THREE_SCANCODE	0x4 /**< @brief THREE scancode */
-#define FOUR_SCANCODE	0x5 /**< @brief FOUR scancode */
+#define ESC_MAKECODE	0x1 /**< @brief ESC scancode */
+#define ENTER_MAKECODE	0x1C /**< @brief ENTER scancode */
+#define SPACE_MAKECODE	0x39 /**< @brief SPACE scancode */
+#define ONE_MAKECODE	0x2 /**< @brief ONE scancode */
+#define TWO_MAKECODE	0x3 /**< @brief TWO scancode */
+#define THREE_MAKECODE	0x4 /**< @brief THREE scancode */
+#define FOUR_MAKECODE	0x5 /**< @brief FOUR scancode */
+
+#define ESC_BREAKCODE	0x81 /**< @brief ESC scancode */
+#define ENTER_BREAKCODE	0x9C /**< @brief ENTER scancode */
+#define SPACE_BREAKCODE	0xB9 /**< @brief SPACE scancode */
+#define ONE_BREAKCODE	0x82 /**< @brief ONE scancode */
+#define TWO_BREAKCODE	0x83 /**< @brief TWO scancode */
+#define THREE_BREAKCODE	0x84 /**< @brief THREE scancode */
+#define FOUR_BREAKCODE	0x85 /**< @brief FOUR scancode */
+
 #define BACKSPACE_SCANCODE	0xE /**< @brief BACKSPACE scancode */
 
 #define TWO_BYTES_SC    0xE0 /**< @brief Scancode with more than one byte */
@@ -137,6 +147,8 @@ typedef unsigned char scode;
 #define WHITE						63
 #define MILITAR						48
 
+
+#define TRANSPARENT					8
 
 #define BACKGROUND_COLOR			SKY_BLUE
 

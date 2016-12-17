@@ -143,11 +143,12 @@ char *read_xpm(char *map[], int *wd, int *ht)
 
 void paintPixel(char* pixelMem, int x, int y, int color) {
 
-	if(x<1024 && y<768){
 
-		*(pixelMem + (y * HRES) + x) = color;
+	if(color != TRANSPARENT){
+		if(x<1024 && y<768){
+			*(pixelMem + (y * HRES) + x) = color;
+		}
 	}
-
 
 }
 

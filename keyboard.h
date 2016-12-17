@@ -24,14 +24,13 @@ char scancodeToChar(unsigned char scancode);
 
 unsigned short lengthOfLetter(char letter);
 
-void printLetterXPM(char letter, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor, unsigned char background);
+void printLetterXPM(char letter, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor);
 
-void printSentence(char* frase, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor, unsigned char background);
+void printSentence(char* frase, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor);
 
 int printLetterText(char* base);
 
 char** letterToPrint(char letter);
 
-char** configLetter(char** xpm_tmp, unsigned char mainColor, unsigned char background);
 
 #endif

@@ -1,4 +1,3 @@
-
 #include "keyboard.h"
 
 static unsigned int G_kbd_hook_id;
@@ -269,30 +268,33 @@ unsigned short lengthOfLetter(char letter){
 	}
 }
 
-void printLetterXPM(char letter, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor, unsigned char background){
+void printLetterXPM(char letter, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor){
 	char** xpm_tmp;
 
 	if(letter == ' ')
-		printXPM(base, configLetter(letters[26], mainColor, background), xi, yi);
+		printXPM(base, configLetter(letters[26], mainColor), xi, yi);
 
 	else if(letter < 123 && letter > 96)
-		printXPM(base, configLetter(letters[letter-97], mainColor, background), xi, yi);
+		printXPM(base, configLetter(letters[letter-97], mainColor), xi, yi);
 
 	else if(letter < 58 && letter > 47)
-		printXPM(base, configLetter(letters[letter-21], mainColor, background), xi, yi);
+		printXPM(base, configLetter(letters[letter-21], mainColor), xi, yi);
+
+	else if(letter == '-')
+		printXPM(base, configLetter(letters[37], mainColor), xi, yi);
 }
 
 
-void printSentence(char* frase, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor, unsigned char background){
+void printSentence(char* frase, unsigned short xi, unsigned short yi, char* base, unsigned char mainColor){
 
-	printLetterXPM(frase[0], xi, yi, base, mainColor, background);
+	printLetterXPM(frase[0], xi, yi, base, mainColor);
 
 	char previous = frase[0];
 	xi += lengthOfLetter(frase[0]);
 
 	int i;
 	for(i = 1; i < strlen(frase); i++){
-		printLetterXPM(frase[i], xi, yi, base, mainColor, background);
+		printLetterXPM(frase[i], xi, yi, base, mainColor);
 
 		char previous = frase[i];
 		xi += lengthOfLetter(frase[i]);
@@ -301,7 +303,7 @@ void printSentence(char* frase, unsigned short xi, unsigned short yi, char* base
 }
 
 int printLetterText(char* base){
-	char frase[12] = "";
+	char frase[13] = "";
 	unsigned counter = 0;
 	int ipc_status;
 	message msg;
@@ -338,8 +340,17 @@ int printLetterText(char* base){
 						if(scancode != ENTER_SCANCODE){
 
 
-							if(scancode == BACKSPACE_SCANCODE && counter>0){
-								frase[--counter] = 0;
+							if(scancode == BACKSPACE_SCANCODE){
+
+								if(counter>0){
+									frase[--counter] = 0;
+
+									printSentence("-------------------", 20,50,base,BACKGROUND_COLOR);
+									printSentence(frase, 20, 50, base, 45);
+
+									logVInt("counter", counter);
+									log("frase", frase);
+								}
 
 
 							}
@@ -347,12 +358,16 @@ int printLetterText(char* base){
 
 								if(!(scancode & BIT(7)) && scancodeToChar(scancode) != ' '){
 //									printf("%c : %d\n", scancodeToChar(scancode), counter++);
-
 									frase[counter++] = scancodeToChar(scancode);
+
+									printSentence(frase, 20, 50, base, 45);
+
+									logVInt("counter", counter);
+									log("frase", frase);
 								}
-								printSentence("            ", 20,20,base,45,BACKGROUND_COLOR);
-								printSentence(frase, 20, 20, base, 45, BACKGROUND_COLOR);
+
 							}
+
 
 						}
 					}
@@ -382,34 +397,6 @@ int printLetterText(char* base){
 	return 1;
 }
 
-char** configLetter(char** xpm, unsigned char mainColor, unsigned char background){
-	char** xpm_tmp = xpm;
-
-	//Change Main Color
-	char* str1;
-	char str2[2];
-	str1 = "  ";
-	itoa(mainColor, str2);
-	char * newMainColor = (char *) malloc(1 + strlen(str1)+ strlen(str2) );
-	strcpy(newMainColor, str1);
-	strcat(newMainColor, str2);
-
-	xpm_tmp[1] = newMainColor;
-
-	char str3[2];
-	str1 = "F ";
-	itoa(background, str2);
-	char * newBackground = (char *) malloc(1 + strlen(str1)+ strlen(str2) );
-	strcpy(newBackground, str1);
-	strcat(newBackground, str2);
-
-	xpm_tmp[2] = newBackground;
-
-//	free(newBackground);
-//	free(newMainColor);
-
-	return xpm_tmp;
-}
 
 
 
@@ -421,3 +408,5 @@ char** configLetter(char** xpm, unsigned char mainColor, unsigned char backgroun
 
 
 
+
+>>>>>>> 541ff9ead5a2a1688eaa15f002a2255979780f34
